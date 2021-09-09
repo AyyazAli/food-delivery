@@ -39,22 +39,22 @@ const handleJWTError = err => new AppError(`Invalid Token Please login again`, 4
 
 const handleJWTExpiredError = () => new AppError(`Your token has been expired, Please login again`, 401);
 
- const handleCastErrorDB = () => {
+ const handleCastErrorDB = (err) => {
     const message = `Invalid ${err.path}: ${err.value}`;
     return new AppError(message, 400)
 }
 
 
 const handleDuplicateFieldsDB = err => {
-    name = err.errmsg.match(/(["'])(?:(?=(\\?))\2.)*?\1/);
+    const name = err.errmsg.match(/(["'])(?:(?=(\\?))\2.)*?\1/);
     const message = `Duplicate Fields are not allowed -- ${name[0]} -- Use different value`;
     return new AppError(message, 400);
 }
 
 
 const handleValidationErrorDB = err => {
-
     const errors = Object.values(err.errors).map(el => el.message);
+
     const message = `Invalid Input Data ${errors.join('. ')}`
     return new AppError(message, 400);
 }
