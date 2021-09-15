@@ -1,24 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import { ThemeProvider } from '@material-ui/styles';
+import routes from './routes'
+import { Router } from 'react-router';
+import { createBrowserHistory } from 'history';
+import RenderRoutes from './components/Routing/renderRoutes/renderRoutes';
+import theme from './theme/index'
+import { Provider as StoreProvider } from 'react-redux';
+import configureStore from './store/configureStore';
+
 
 function App() {
+  const store = configureStore();
+  const history = createBrowserHistory();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StoreProvider store={store}>
+      <ThemeProvider theme={theme}>
+        <Router history={history}>
+          <RenderRoutes routes={routes} />
+        </Router>
+      </ThemeProvider>
+    </StoreProvider>
   );
 }
 

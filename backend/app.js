@@ -2,17 +2,21 @@ const express = require('express');
 const app = express();
 const bodyParser = require("body-parser");
 const path = require('path');
+const mongoose = require('mongoose');
 
+//Import Routs
+
+const userRoutes = require('./routes/userRoutes')
 // Development Plugins Import i.e [Logging]
 const morgan = require('morgan');
 
 // Error Handling Dependencies
-const { errorHandler } = require('./controller/errorController');
+const { errorHandler } = require('./controllers/errorController');
 const appError = require('./utils/appError');
 
+
+
 // 1) GLOBAL MIDDLEWARES
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -23,6 +27,18 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+
+//mongodb connection
+mongoose.connect(
+  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.hqtta.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, { useNewUrlParser: true })
+  .then(() => {
+    console.log("Done: connected to database")
+  })
+  .catch((err) => {
+    console.log(err);
+    console.log("connection failed");
+  });
+
 // CORS Functionality
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -30,10 +46,6 @@ app.use(function (req, res, next) {
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   );
-  // res.setHeader('Access-Control-Allow-Credentials', true)
-
-  // res.header('Access-Control-Allow-Origin', req.headers.origin);
-//  res.header('Access-Control-Allow-Origin', "*");
 
   res.setHeader(
     'Access-Control-Allow-Methods',
@@ -47,6 +59,14 @@ app.use("/public", express.static(path.join(__dirname, 'public')));
 
 // 2) Routes
 
+app.use("/api/user", userRoutes)
+
+
+app.get("/", (req, res, next)=>{
+  res.status(200).json({
+    msg: "received"
+  })
+})
 
 // 3) Error Handeling
 
