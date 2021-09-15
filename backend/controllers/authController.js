@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const catchAsync = require('./errorController').catchAsync;
 const AppError = require('../utils/appError');
+const { Role } = require('../utils/constants');
 
 
 const createUser = async (data) => {
@@ -27,7 +28,7 @@ exports.createUser = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
     role: req.body.role
   }
-  const user = createUser(data)
+  const user = await createUser(data)
 
   // create the token and send the response to the user
   try {
