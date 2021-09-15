@@ -23,7 +23,6 @@ exports.createUser = catchAsync(async (req, res, next) => {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email,
-    gender: req.body.gender,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
     role: req.body.role

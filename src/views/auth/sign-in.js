@@ -1,14 +1,16 @@
-import { Avatar, Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, TextField, Typography, Link as RouterLink } from '@material-ui/core';
+import { Avatar, Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, TextField, Typography, Link as MuiLink } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import Copyright from '../../components/copyright/copyright';
 import { makeStyles } from "@material-ui/styles";
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from 'store/actions';
 
 const useStyles = makeStyles({
     container: {
-        marginTop: 8,
+        marginTop: "40%",
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
@@ -17,26 +19,23 @@ const useStyles = makeStyles({
 
 const SignIn = () => {
     const classes = useStyles();
-    const [error, setError] = useState(false)
+    const authState = useSelector(state => state.auth)
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log("signin")
+    }, [])
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        setError(undefined)
-        // eslint-disable-next-line no-console
-        try {
-            const { data: respopnseData } = await axios.post(`${process.env.REACT_APP_API_URL}/api/user/login`, {
-                email: data.get('email'),
-                password: data.get('password')
-            })
-            console.log(respopnseData)
-        } catch (err) {
-            setError(err.response.data)
-        }
+        dispatch(login(data.get('email'), data.get('password')))
+        console.log(authState)
     };
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            {/* <CssBaseline /> */}
             <Box
                 className={classes.container}
             >
@@ -71,7 +70,7 @@ const SignIn = () => {
                         autoComplete="current-password"
                     />
                     <Typography color="error">
-                        {error ? error.message : ""}
+                        {authState.error ? authState.error.message : ""}
                     </Typography>
                     <Button
                         type="submit"
@@ -82,22 +81,18 @@ const SignIn = () => {
                     >
                         Sign In
                     </Button>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href="#">
-                                <Typography variant="body2">
-                                    Forgot password?
-                                </Typography>
-                            </Link>
+                    <Box sx={{ mt: 3, mb: 2 }}>
+
+                        <Grid container space={2}>
+                            <Grid item>
+                                <Link to="/sign-up">
+                                    <Typography>
+                                        Don't have an account? Sign Up
+                                    </Typography>
+                                </Link>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <Link href="/sign-up">
-                                <Typography>
-                                    Don't have an account? Sign Up
-                                </Typography>
-                            </Link>
-                        </Grid>
-                    </Grid>
+                    </Box>
                 </Box>
             </Box>
             <Copyright sx={{ mt: 8, mb: 4 }} />

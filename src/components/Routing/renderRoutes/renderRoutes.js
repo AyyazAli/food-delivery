@@ -11,7 +11,7 @@ const RenderRoutes = ({ routes }) => {
             alignContent: "center",
             alignItems: "center",
             textAlign: "center",
-            top: "50%",
+            marginTop: "50%",            
             margin: "auto",
             height: "100%"
         }} 

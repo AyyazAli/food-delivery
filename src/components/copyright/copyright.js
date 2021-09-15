@@ -3,10 +3,10 @@ import React from 'react'
 
 const Copyright = (props) => {
     return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        <Typography variant="body2" color="textSecondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://material-ui.com/">
-                Your Website
+            <Link color="inherit" href="https://toptal.com" target="__blank">
+                Toptal Food Delivery
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}

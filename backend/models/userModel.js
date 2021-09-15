@@ -46,11 +46,6 @@ const userSchema = mongoose.Schema({
     default: 'user'
   },
 
-  gender: {
-    type: String,
-    enum: ['male', 'female']
-  },
-
   accountStatus: {
     type: String,
     default: 'active',

@@ -17,7 +17,7 @@ export default {
     lineHeight: '32px'
   },
   h3: {
-    color: palette.text.primary,
+    color: palette.text.secondary,
     fontWeight: 500,
     fontSize: '24px',
     letterSpacing: '-0.06px',
