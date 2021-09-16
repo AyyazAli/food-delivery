@@ -40,16 +40,19 @@ exports.createUser = catchAsync(async (req, res, next) => {
   }
 });
 
-const signToken = id => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN
+const signToken = (user,expiresIn) => {
+  return jwt.sign({ 
+    _id: user._id,
+    email: user.email,
+    role: user.role
+   }, process.env.JWT_SECRET, {
+    expiresIn
   })
 }
 
 const createSendToken = (user, statusCode, res) => {
-  const token = signToken(user._id);
-
   const expiresIn = process.env.JWT_EXPIRES_IN * 24 * 60 * 60 * 1000;
+  const token = signToken(user, expiresIn);
 
 
   // delete the password from the output
@@ -123,16 +126,3 @@ exports.protect = catchAsync(async (req, res, next) => {
   req.user = currentUser;
   next();
 })
-
-
-// function wrapper to return the middleware function but with the generated roles array
-exports.restrictTo = (...roles) => {
-  return (req, res, next) => {
-    console.log(req.user.role);
-    console.log(roles);
-    if (!roles.includes(req.user.role)) {
-      return next(new AppError('You do not have permission to perform this action', 403))
-    }
-    next();
-  }
-}
