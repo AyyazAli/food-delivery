@@ -17,6 +17,7 @@ const mainListItems = [
     { name: "Restaurants", link: '/owner/restaurants' },
     { name: "Meals", link: '/owner/restaurants' }
 ]
+
 const OwnerLayout = ({ children, title, topButton }) => {
     const [open, setOpen] = useState(true);
     const classes = useStyles();
@@ -71,9 +72,9 @@ const OwnerLayout = ({ children, title, topButton }) => {
                 </Toolbar>
                 <Divider />
                 <List>
-                    {mainListItems.map(oneItem => {
+                    {mainListItems.map((oneItem, index) => {
                         return (
-                            <Link to={oneItem.link} style={{ textDecoration: "none" }}>
+                            <Link key={index} to={oneItem.link} style={{ textDecoration: "none" }}>
                                 <ListItem button>
                                     <ListItemIcon>
                                         <Dashboard />

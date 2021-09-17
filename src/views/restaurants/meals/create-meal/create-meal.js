@@ -1,23 +1,29 @@
-import { Card, Box, TextField, Typography, Button, CardContent, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
-import OwnerLayout from 'layouts/owner-layout/owner-layout';
-import React, { useState } from 'react'
-import axiosInstance from 'utils/axiosInstance';
+import { Box, Button, Card, CardContent, TextField } from '@material-ui/core'
+import OwnerLayout from 'layouts/owner-layout/owner-layout'
+import React from 'react'
+import qs from 'qs'
+import axiosInstance from 'utils/axiosInstance'
 
-const CreateRestaurant = ({ history }) => {
-    const [mealType, setMealType] = useState('seaFood');
+
+const CreateMeal = ({ location, history }) => {
+    const query = qs.parse(location.search, { ignoreQueryPrefix: true })
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        const result = await axiosInstance.post('/restaurant', {
+
+        await axiosInstance.post('/meal', {
+            restaurantId: query.restaurantId,
             name: data.get('name'),
             description: data.get('description'),
-            mealType: data.get('mealType')
+            price: data.get('price')
         })
-        history.push('/owner/restaurants')
+        history.push(`/owner/restaurants/${query.restaurantId}`)
     }
-
     return (
-        <OwnerLayout title="Create Restaurant">
+        <OwnerLayout
+            title={`Create ${query.name} Meal`}
+        >
             <Card>
                 <CardContent style={{
                     display: 'block',
@@ -43,34 +49,22 @@ const CreateRestaurant = ({ history }) => {
                             margin="normal"
                             fullWidth
                             name="description"
-                            label="description"
-                            type="description"
+                            label="Description"
+                            type="text"
                             id="description"
                             variant="outlined"
                             autoComplete="current-password"
                         />
-                        <FormControl fullWidth>
-                            <InputLabel id="restaurant-meal-type"> Meal Type </InputLabel>
-                            <Select
-                                required
-                                labelId="restaurant-meal-type"
-                                label="Meal Type"
-                                name="mealType"
-                                defaultValue={mealType}
-                                value={mealType}
-                                variant="outlined"
-                                onChange={(event) => setMealType(event.target.value)}>
-                                <MenuItem value="seaFood">
-                                    Sea Food
-                                </MenuItem>
-                                <MenuItem value="fastFood">
-                                    Fast Food
-                                </MenuItem>
-                                <MenuItem value="chineese">
-                                    Chineese
-                                </MenuItem>
-                            </Select>
-                        </FormControl>
+                        <TextField
+                            margin="normal"
+                            fullWidth
+                            name="price"
+                            label="Price"
+                            type="number"
+                            id="price"
+                            variant="outlined"
+                            autoComplete="current-password"
+                        />
                         <Button
                             type="submit"
                             fullWidth
@@ -87,4 +81,4 @@ const CreateRestaurant = ({ history }) => {
     )
 }
 
-export default CreateRestaurant;
+export default CreateMeal
