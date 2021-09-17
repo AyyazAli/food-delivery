@@ -16,14 +16,35 @@ export const loginFail = (error) => {
 
 
 export const logout = () => {
+    // localStorage.setItem('token', undefined)
+    // localStorage.setItem('user', undefined)
+    // localStorage.setItem('loggedIn', undefined)
     return { type: actionTypes.LOGOUT }
 }
-
 
 export const authTimeOut = (expiresIn) => dispatch => {
     setTimeout(() => {
         dispatch(logout)
     }, expiresIn)
+}
+
+
+const setLocalStorage = (data) => {
+    localStorage.setItem('token', data.token)
+    localStorage.setItem('expiresIn', data.expiresIn)
+    localStorage.setItem('role', data.data.user.role)
+    localStorage.setItem('userId', data.data.user.userId)
+    localStorage.setItem('loggedIn', true)
+}
+const getLocalStorage = (data) => {
+    return {
+        token: localStorage.getItem('token'),
+        role: localStorage.getItem('role'),
+        userId: localStorage.getItem('userId'),
+        expiresIn: localStorage.getItem('expiresIn'),
+        loggedIn: localStorage.getItem('loggedIn')
+
+    }
 }
 
 
@@ -40,13 +61,16 @@ export const registerSuccess = (data) => {
     return { type: actionTypes.REGISTER_SUCCESS, data }
 }
 
+export const autoAuthenticate = () => {
+    const data = getLocalStorage();
+    return { type: actionTypes.AUTO_AUTHENTICATE, data };
+}
 
 export const signUp = (data, router) => dispatch => {
     dispatch(registerStart());
     axios.post(`${process.env.REACT_APP_API_URL}/api/user/sign-up`, data).then(response => {
         dispatch(registerSuccess(response.data));
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('user', response.data.data.user)
+        setLocalStorage(response.data)
         authTimeOut(response.data.expiresIn)
         // router.history.push('/');
     }).catch(err => {
@@ -56,13 +80,11 @@ export const signUp = (data, router) => dispatch => {
 
 export const login = (email, password) => dispatch => {
     const authData = { email, password };
-    console.log(authData)
     dispatch(loginStart());
     axios.post(`${process.env.REACT_APP_API_URL}/api/user/login`, authData).then(response => {
         dispatch(loginSuccess(response.data));
         dispatch(authTimeOut(response.data.expiresIn));
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('user', response.data.data.user)
+        setLocalStorage(response.data)
         authTimeOut(response.data.expiresIn)
     }).catch(err => {
         dispatch(loginFail(err.response.data));

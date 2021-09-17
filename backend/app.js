@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 //Import Routs
 
 const userRoutes = require('./routes/userRoutes')
+const restaurantRoutes = require('./routes/restaurantRoutes')
 // Development Plugins Import i.e [Logging]
 const morgan = require('morgan');
 
@@ -60,13 +61,8 @@ app.use("/public", express.static(path.join(__dirname, 'public')));
 // 2) Routes
 
 app.use("/api/user", userRoutes)
+app.use("/api/restaurant",restaurantRoutes )
 
-
-app.get("/", (req, res, next)=>{
-  res.status(200).json({
-    msg: "received"
-  })
-})
 
 // 3) Error Handeling
 

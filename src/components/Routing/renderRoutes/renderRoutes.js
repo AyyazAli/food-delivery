@@ -1,37 +1,48 @@
-import React, { Suspense } from 'react'
-import { Route } from 'react-router'
+import React, { Suspense, useEffect } from 'react'
+import { Route, Switch } from 'react-router'
 import ProtectedRoute from '../protectedRoute/protectedRoute'
 import PropTypes from 'prop-types'
 import { CircularProgress } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
+import { autoAuthenticate } from 'store/actions'
 
 const RenderRoutes = ({ routes }) => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(autoAuthenticate())
+    }, [])
+
     return (
         <Suspense fallback={<CircularProgress style={{
             display: "flex",
             alignContent: "center",
             alignItems: "center",
             textAlign: "center",
-            marginTop: "50%",            
+            marginTop: "50%",
             margin: "auto",
             height: "100%"
-        }} 
-        color="primary" />}>
-            {
-                routes.map(({ path, exact, component, isProtected = false }, index) => {
-                    console.log({ path, exact, component, isProtected })
-                    return isProtected
-                        ? <ProtectedRoute
-                            path={path}
-                            exact={exact}
-                            component={component}
-                            key={index} />
-                        : <Route
-                            path={path}
-                            exact={exact}
-                            component={component}
-                            key={index} />
-                })
-            }
+        }}
+            color="primary" />}>
+            <Switch>
+
+                {
+                    routes.map(({ path, exact, component, isProtected = false, restrictTo }, index) => {
+                        console.log({ path, exact, component, isProtected, restrictTo })
+                        return isProtected
+                            ? <ProtectedRoute
+                                path={path}
+                                exact={exact}
+                                component={component}
+                                key={index}
+                                restrictTo={restrictTo} />
+                            : <Route
+                                path={path}
+                                exact={exact}
+                                component={component}
+                                key={index} />
+                    })
+                }
+            </Switch>
         </Suspense>
     )
 }

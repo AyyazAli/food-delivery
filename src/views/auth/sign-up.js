@@ -13,7 +13,7 @@ const SignUp = () => {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.auth)
     useEffect(() => {
-        console.log("signin")
+        console.log("signup")
     }, [])
     const handleSubmit = (event) => {
         event.preventDefault();

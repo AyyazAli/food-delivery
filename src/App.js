@@ -5,11 +5,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import RenderRoutes from './components/Routing/renderRoutes/renderRoutes';
 import theme from './theme/index'
-import { Provider as StoreProvider } from 'react-redux';
+import { Provider as StoreProvider, useDispatch } from 'react-redux';
 import configureStore from './store/configureStore';
 
-
 function App() {
+
   const store = configureStore();
   const history = createBrowserHistory();
   return (
