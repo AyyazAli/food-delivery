@@ -73,14 +73,14 @@ const OwnerLayout = ({ children, title, topButton }) => {
                 <List>
                     {mainListItems.map(oneItem => {
                         return (
-                            <ListItem button>
+                            <Link to={oneItem.link} style={{ textDecoration: "none" }}>
+                                <ListItem button>
                                     <ListItemIcon>
                                         <Dashboard />
                                     </ListItemIcon>
-                                    <Link to={oneItem.link} style={{textDecoration: "none"}}>
                                     <ListItemText primary={oneItem.name} />
-                                    </Link>
-                            </ListItem>
+                                </ListItem>
+                            </Link>
                         )
                     })}
                 </List>
