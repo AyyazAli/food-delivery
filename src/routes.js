@@ -25,12 +25,26 @@ const routes = [
         component: lazy(() => import('./views/restaurants/restaurants'))
     },
     {
+        path: '/owner/restaurants/:id',
+        isProtected: true,
+        exact: true,
+        component: lazy(() => import('./views/restaurants/single-restaurant'))
+    },
+    {
         path: '/owner/create-restaurant',
         isProtected: true,
         exact: true,
         restrictTo: 'owner',
         component: lazy(() => import('./views/restaurants/create-restaurant'))
     },
+    {
+        path: '/owner/create-meal',
+        isProtected: true,
+        exact: true,
+        restrictTo: 'owner',
+        component: lazy(() => import('./views/restaurants/meals/create-meal/create-meal'))
+    },
+
     {
         path: '/restaurants',
         isProtected: true,

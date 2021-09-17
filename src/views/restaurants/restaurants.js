@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Grid, Typography } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import RestaurantCard from 'components/restaurant-card/restaurant-card'
 import axiosInstance from 'utils/axiosInstance'
-import { Link } from 'react-router-dom'
 import OwnerLayout from 'layouts/owner-layout/owner-layout'
-import FormDialog from 'components/dialog/dialog'
 import AppBackdrop from 'components/backdrop/backdrop'
 
 const Restaurants = ({ history }) => {
@@ -36,12 +34,12 @@ const Restaurants = ({ history }) => {
             <Grid container spacing={2}>
                 {restaurants ? restaurants.map((singleRestaurant, index) =>
                     <Grid md={4} xs={12} item key={index}>
-                            <RestaurantCard
-                                id={singleRestaurant._id}
-                                name={singleRestaurant.name}
-                                description={singleRestaurant.description}
-                                mealType={singleRestaurant.mealType}
-                                action={() => deleteRestaurant(singleRestaurant._id)} />
+                        <RestaurantCard
+                            id={singleRestaurant._id}
+                            name={singleRestaurant.name}
+                            description={singleRestaurant.description}
+                            mealType={singleRestaurant.mealType}
+                            action={() => deleteRestaurant(singleRestaurant._id)} />
                     </Grid>
                 ) : ""}
             </Grid>

@@ -1,13 +1,21 @@
 const catchAsync = require('./errorController').catchAsync;
 const AppError = require('../utils/appError');
 const MealsModel = require('../models/mealsModel');
+const RestaurantModel = require('../models/restaurantModel');
 const apiFeatures = require('../utils/apiFeatures.js')
 
 exports.createMeal = catchAsync(async (req, res, next) => {
     const { name, description, price, restaurantId } = req.body;
+
     if (req.userData.role !== "owner") {
         return next(new AppError('Only Owners can add meals to restaurants', 401))
     }
+
+    const restaurant = await RestaurantModel.findOne({ _id: restaurantId, owner: req.userData.userId })
+    if (!restaurant) {
+        return next(new AppError('Either Restaurant is not found, or you dont own this restraurant', 401))
+    }
+
     const newMeal = await MealsModel.create({
         owner: req.userData.userId,
         restaurant: restaurantId,
@@ -30,9 +38,10 @@ exports.getMeals = catchAsync(async (req, res, next) => {
         .pagination()
         .query
 
-    if (meals.length === 0) {
-        return next(new AppError('No Meals Found', 404))
-    }
+    console.log(meals)
+    // if (meals.length === 0) {
+    //     return next(new AppError('No Meals Found', 404))
+    // }
 
     const totalMeals = await MealsModel.countDocuments({}).exec();
 
