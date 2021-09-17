@@ -64,12 +64,6 @@ app.use("/api/user", userRoutes)
 app.use("/api/restaurant",restaurantRoutes )
 
 
-app.get("/", (req, res, next)=>{
-  res.status(200).json({
-    msg: "received"
-  })
-})
-
 // 3) Error Handeling
 
 

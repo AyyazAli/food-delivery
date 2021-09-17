@@ -9,7 +9,6 @@ router.route('/')
     .post(check_auth, restrictTo(Role.owner), createRestaurant)
     .get(check_auth, getRestaurants)
 
-
 router.route('/:id')
     .get(getSingleRestaurant)
     .delete(check_auth, restrictTo(Role.owner), deleteRestaurant)

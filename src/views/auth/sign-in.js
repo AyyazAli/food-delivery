@@ -1,10 +1,9 @@
 import { Avatar, Box, Button, Checkbox, Container, CssBaseline, FormControlLabel, Grid, TextField, Typography, Link as MuiLink } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import Copyright from '../../components/copyright/copyright';
 import { makeStyles } from "@material-ui/styles";
-import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from 'store/actions';
 
@@ -22,10 +21,6 @@ const SignIn = () => {
     const authState = useSelector(state => state.auth)
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        console.log("signin")
-    }, [])
-    
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
