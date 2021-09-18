@@ -1,5 +1,5 @@
 import { AppBar as MuiAppBar, Badge, Box, Button, Card, Container, Divider, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Paper, Toolbar, Typography } from "@material-ui/core";
-import { ChevronLeft, Dashboard, Menu, Notifications } from "@material-ui/icons";
+import { ChevronLeft, Dashboard, EmojiFoodBeverage, Menu, Notifications, People, VerifiedUser } from "@material-ui/icons";
 import { makeStyles, styled } from "@material-ui/styles";
 import Copyright from "components/copyright/copyright";
 import Drawer from "layouts/drawer";
@@ -14,12 +14,13 @@ const useStyles = makeStyles({
 })
 
 const mainListItems = [
-    { name: "Restaurants", link: '/owner/restaurants' },
-    { name: "Meals", link: '/owner/restaurants' }
+    { name: "Restaurants", link: '/owner/restaurants', icon: <EmojiFoodBeverage /> },
+    { name: "Users", link: '/owner/users', icon: <People /> }
 ]
 
-const OwnerLayout = ({ children, title, topButton }) => {
+const Layout = ({ children, title, topButton }) => {
     const [open, setOpen] = useState(true);
+    const role = localStorage.getItem('role');
     const classes = useStyles();
     const toggleDrawer = () => {
         setOpen(!open);
@@ -28,7 +29,7 @@ const OwnerLayout = ({ children, title, topButton }) => {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <AppBar position="absolute" open={open}>
+            <AppBar position="absolute" color={role === 'owner' ? 'secondary' : 'primary'} open={open}>
                 <Toolbar
                     sx={{
                         pr: '24px', // keep right padding when drawer closed
@@ -53,7 +54,7 @@ const OwnerLayout = ({ children, title, topButton }) => {
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        Owner Dashboard
+                        {role.toUpperCase()} Dashboard
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -66,9 +67,13 @@ const OwnerLayout = ({ children, title, topButton }) => {
                         px: [1],
                     }}
                 >
-                    <IconButton onClick={toggleDrawer}>
-                        <ChevronLeft />
-                    </IconButton>
+                    <img
+                        src="https://www.toptal.com/toptal-logo.png"
+                        alt="Toptal Icon"
+                        width={116}
+                        height={32} />
+                    {/* <IconButton onClick={toggleDrawer}> */}
+                    {/* </IconButton> */}
                 </Toolbar>
                 <Divider />
                 <List>
@@ -77,7 +82,7 @@ const OwnerLayout = ({ children, title, topButton }) => {
                             <Link key={index} to={oneItem.link} style={{ textDecoration: "none" }}>
                                 <ListItem button>
                                     <ListItemIcon>
-                                        <Dashboard />
+                                        {oneItem.icon}
                                     </ListItemIcon>
                                     <ListItemText primary={oneItem.name} />
                                 </ListItem>
@@ -137,4 +142,4 @@ const OwnerLayout = ({ children, title, topButton }) => {
     );
 }
 
-export default OwnerLayout;
+export default Layout;

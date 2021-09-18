@@ -1,5 +1,5 @@
 import { Card, Box, TextField, Typography, Button, CardContent, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
-import OwnerLayout from 'layouts/owner-layout/owner-layout';
+import Layout from 'layouts/layout';
 import React, { useState } from 'react'
 import axiosInstance from 'utils/axiosInstance';
 
@@ -17,7 +17,7 @@ const CreateRestaurant = ({ history }) => {
     }
 
     return (
-        <OwnerLayout title="Create Restaurant">
+        <Layout title="Create Restaurant">
             <Card>
                 <CardContent style={{
                     display: 'block',
@@ -83,7 +83,7 @@ const CreateRestaurant = ({ history }) => {
                     </Box>
                 </CardContent>
             </Card>
-        </OwnerLayout>
+        </Layout>
     )
 }
 

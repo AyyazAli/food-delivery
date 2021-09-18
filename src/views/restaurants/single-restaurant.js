@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import OwnerLayout from 'layouts/owner-layout/owner-layout'
+import Layout from 'layouts/layout'
 import axiosInstance from 'utils/axiosInstance'
 import AppBackdrop from 'components/backdrop/backdrop'
 import { Card, CardContent, colors, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
@@ -45,7 +45,7 @@ const SingleRestaurant = ({ match, history }) => {
     return (
         <Fragment>
             <AppBackdrop open={loading} />
-            <OwnerLayout
+            <Layout
                 title={restaurant?.name}
                 topButton={{ text: "Create Meal", action: handleCreateMeal }}
             >
@@ -85,7 +85,7 @@ const SingleRestaurant = ({ match, history }) => {
                 </Grid>
 
 
-            </OwnerLayout>
+            </Layout>
         </Fragment>
     )
 }

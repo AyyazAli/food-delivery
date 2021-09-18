@@ -1,5 +1,5 @@
 import { Box, Button, Card, CardContent, TextField } from '@material-ui/core'
-import OwnerLayout from 'layouts/owner-layout/owner-layout'
+import Layout from 'layouts/layout'
 import React from 'react'
 import qs from 'qs'
 import axiosInstance from 'utils/axiosInstance'
@@ -21,7 +21,7 @@ const CreateMeal = ({ location, history }) => {
         history.push(`/owner/restaurants/${query.restaurantId}`)
     }
     return (
-        <OwnerLayout
+        <Layout
             title={`Create ${query.name} Meal`}
         >
             <Card>
@@ -77,7 +77,7 @@ const CreateMeal = ({ location, history }) => {
                     </Box>
                 </CardContent>
             </Card>
-        </OwnerLayout>
+        </Layout>
     )
 }
 

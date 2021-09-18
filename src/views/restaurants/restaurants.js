@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Grid } from '@material-ui/core'
 import RestaurantCard from 'components/restaurant-card/restaurant-card'
 import axiosInstance from 'utils/axiosInstance'
-import OwnerLayout from 'layouts/owner-layout/owner-layout'
+import Layout from 'layouts/layout'
 import AppBackdrop from 'components/backdrop/backdrop'
 
 const Restaurants = ({ history }) => {
@@ -27,7 +27,7 @@ const Restaurants = ({ history }) => {
     }, [])
 
     return (
-        <OwnerLayout
+        <Layout
             title="Restaurants"
             topButton={{ text: "Create", action: createRestaurant }}>
             <AppBackdrop open={loader} />
@@ -43,7 +43,7 @@ const Restaurants = ({ history }) => {
                     </Grid>
                 ) : ""}
             </Grid>
-        </OwnerLayout>
+        </Layout>
     )
 }
 
