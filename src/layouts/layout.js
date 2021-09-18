@@ -7,6 +7,7 @@ import AppBar from "layouts/header";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { Redirect } from "react-router";
 
 const useStyles = makeStyles({
     topButton: {
@@ -25,6 +26,7 @@ const userRoutes = [
 
 const Layout = ({ children, title, topButton }) => {
     const [open, setOpen] = useState(true);
+    const [redirect, setRedirect] = useState(false)
     const authState = useSelector(state => state.auth)
     const owner = authState.role === "owner";
     const cart = useSelector(state => state.cart)
@@ -32,10 +34,14 @@ const Layout = ({ children, title, topButton }) => {
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
+    const handleCart = () => {
+        setRedirect(true)
+        // setRedirect(false)
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>
+            {redirect ? <Redirect to="/cart" /> : ""}
             <AppBar position="absolute" color={owner ? 'secondary' : 'primary'} open={open}>
                 <Toolbar
                     sx={{
@@ -65,7 +71,7 @@ const Layout = ({ children, title, topButton }) => {
                     </Typography>
                     {
                         !owner ?
-                            <IconButton color="inherit" style={{ flexGrow: 1, placeContent: "flex-end" }}>
+                            <IconButton onClick={handleCart} color="inherit" style={{ flexGrow: 1, placeContent: "flex-end" }}>
                                 <Badge badgeContent={cart.count} color="secondary">
                                     <ShoppingBasketOutlined />
                                 </Badge>
