@@ -5,10 +5,10 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 
 
-const RestaurantCard = ({ id, name, description, mealType, action }) => {
+const RestaurantCard = ({ to, name, description, mealType, action }) => {
     return (
-        <Link style={{ textDecoration: 'none' }} to={`/owner/restaurants/${id}`}>
-            <Card>
+        <Card>
+            <Link style={{ textDecoration: 'none', color: "inherit" }} to={to}>
                 <CardActionArea>
                     <CardHeader title={
                         <Typography variant="h2">
@@ -26,15 +26,16 @@ const RestaurantCard = ({ id, name, description, mealType, action }) => {
                             Meal Type: {mealType}
                         </Typography>
                     </CardContent>
-                    <CardActions>
-                        <Button onClick={action} color="primary" variant="contained">
-                            <Delete />
-                        </Button>
-
-                    </CardActions>
                 </CardActionArea>
-            </Card>
-        </Link>
+            </Link>
+            {action ? <CardActions>
+                <Button onClick={action} color="primary" variant="contained">
+                    <Delete />
+                </Button>
+
+            </CardActions> : ""}
+        </Card>
+
     )
 }
 

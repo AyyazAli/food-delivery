@@ -4,9 +4,12 @@ import RestaurantCard from 'components/restaurant-card/restaurant-card'
 import axiosInstance from 'utils/axiosInstance'
 import Layout from 'layouts/layout'
 import AppBackdrop from 'components/backdrop/backdrop'
+import { useSelector } from 'react-redux'
 
 const Restaurants = ({ history }) => {
     const [restaurants, setRestaurants] = useState([])
+    const authState = useSelector(state => state.auth)
+    const owner = authState.role === "owner";
     const [loader, setLoader] = useState(false);
     const createRestaurant = () => {
         history.push('/owner/create-restaurant')
@@ -29,17 +32,19 @@ const Restaurants = ({ history }) => {
     return (
         <Layout
             title="Restaurants"
-            topButton={{ text: "Create", action: createRestaurant }}>
+            topButton={owner ? { text: "Create", action: createRestaurant } : undefined}>
             <AppBackdrop open={loader} />
             <Grid container spacing={2}>
                 {restaurants ? restaurants.map((singleRestaurant, index) =>
                     <Grid md={4} xs={12} item key={index}>
                         <RestaurantCard
-                            id={singleRestaurant._id}
+                            to={owner
+                                ? `/owner/restaurants/${singleRestaurant._id}`
+                                : `/restaurants/${singleRestaurant._id}`}
                             name={singleRestaurant.name}
                             description={singleRestaurant.description}
                             mealType={singleRestaurant.mealType}
-                            action={() => deleteRestaurant(singleRestaurant._id)} />
+                            action={owner ? () => deleteRestaurant(singleRestaurant._id) : undefined} />
                     </Grid>
                 ) : ""}
             </Grid>

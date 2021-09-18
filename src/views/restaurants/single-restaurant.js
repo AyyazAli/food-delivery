@@ -2,15 +2,25 @@ import React, { Fragment, useEffect, useState } from 'react'
 import Layout from 'layouts/layout'
 import axiosInstance from 'utils/axiosInstance'
 import AppBackdrop from 'components/backdrop/backdrop'
-import { Card, CardContent, colors, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
-import { Delete } from '@material-ui/icons'
+import { Button, Card, CardContent, colors, Dialog, DialogActions, DialogContent, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, Typography } from '@material-ui/core'
+import { Add, AddCircle, Delete } from '@material-ui/icons'
+import { useDispatch, useSelector } from 'react-redux'
+import { addItemToCart, cartRestaurant, resetCart } from 'store/actions'
 
 const SingleRestaurant = ({ match, history }) => {
     const restaurantId = match.params.id;
     const [restaurant, setRestaurant] = useState()
     const [loading, setLoading] = useState(false)
     const [meals, setMeals] = useState([])
+    const [restaurantChangeDialog, setRestaurantChangeDialog] = useState(false)
+    const authState = useSelector(state => state.auth)
+    const cartState = useSelector(state => state.cart)
+    const owner = authState.role === "owner";
+    const dispatch = useDispatch();
 
+    const addToCart = (item) => {
+        dispatch(addItemToCart(item))
+    }
     const handleCreateMeal = () => {
         history.push({
             pathname: '/owner/create-meal',
@@ -18,7 +28,7 @@ const SingleRestaurant = ({ match, history }) => {
         })
     }
 
-    const deleteMeal = async(id) => {
+    const deleteMeal = async (id) => {
         await axiosInstance.delete(`/meal/${id}`)
         setMeals(meals.filter(oneMeal => oneMeal._id !== id))
     }
@@ -27,7 +37,19 @@ const SingleRestaurant = ({ match, history }) => {
         setLoading(true)
         axiosInstance.get(`/restaurant/${restaurantId}`).then(response => {
             setLoading(false)
-            setRestaurant(response.data.data)
+            if (!owner) {
+                setRestaurant(response.data.data)
+                dispatch(cartRestaurant(
+                    {
+                        id: response.data.data._id,
+                        name: response.data.data.name
+                    }
+                ))
+                if (cartState.restaurant && (cartState.restaurant?.id !== restaurantId)) {
+                    setRestaurantChangeDialog(true)
+                    dispatch(resetCart())
+                }
+            }
         })
     }, [])
 
@@ -47,9 +69,18 @@ const SingleRestaurant = ({ match, history }) => {
             <AppBackdrop open={loading} />
             <Layout
                 title={restaurant?.name}
-                topButton={{ text: "Create Meal", action: handleCreateMeal }}
+                topButton={owner ? { text: "Create Meal", action: handleCreateMeal } : undefined}
             >
-
+                <Dialog open={restaurantChangeDialog}>
+                    <DialogContent>
+                        You can only order from one restaurant at a single time. All of the items from your cart has been deleted. You can now add new items from this restaurant. Thanks
+                    </DialogContent>
+                    <DialogActions >
+                        <Button onClick={() => setRestaurantChangeDialog(false)}>
+                            Okay
+                        </Button>
+                    </DialogActions>
+                </Dialog>
                 <Grid container spacing={1} >
                     {
                         meals.map((singleMeal, index) =>
@@ -71,8 +102,11 @@ const SingleRestaurant = ({ match, history }) => {
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={12}>
-                                                <IconButton color="primary" onClick={() => deleteMeal(singleMeal._id)} style={{ float: "right" }} >
-                                                    <Delete />
+                                                <IconButton
+                                                    color="primary"
+                                                    onClick={() => owner ? deleteMeal(singleMeal._id) : addToCart(singleMeal)}
+                                                    style={{ float: "right" }} >
+                                                    {owner ? <Delete /> : <AddCircle />}
                                                 </IconButton>
                                             </Grid>
 

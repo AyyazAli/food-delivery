@@ -1,10 +1,11 @@
 import { AppBar as MuiAppBar, Badge, Box, Button, Card, Container, Divider, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Paper, Toolbar, Typography } from "@material-ui/core";
-import { ChevronLeft, Dashboard, EmojiFoodBeverage, Menu, Notifications, People, VerifiedUser } from "@material-ui/icons";
+import { AccessTime, ChevronLeft, Dashboard, EmojiFoodBeverage, Menu, Notifications, People, ShoppingBasket, ShoppingBasketOutlined, VerifiedUser } from "@material-ui/icons";
 import { makeStyles, styled } from "@material-ui/styles";
 import Copyright from "components/copyright/copyright";
 import Drawer from "layouts/drawer";
 import AppBar from "layouts/header";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -13,14 +14,20 @@ const useStyles = makeStyles({
     }
 })
 
-const mainListItems = [
+const ownerRoutes = [
     { name: "Restaurants", link: '/owner/restaurants', icon: <EmojiFoodBeverage /> },
     { name: "Users", link: '/owner/users', icon: <People /> }
+]
+const userRoutes = [
+    { name: "Restaurants", link: '/restaurants', icon: <EmojiFoodBeverage /> },
+    { name: "Orders", link: '/orders', icon: <AccessTime /> }
 ]
 
 const Layout = ({ children, title, topButton }) => {
     const [open, setOpen] = useState(true);
-    const role = localStorage.getItem('role');
+    const authState = useSelector(state => state.auth)
+    const owner = authState.role === "owner";
+    const cart = useSelector(state => state.cart)
     const classes = useStyles();
     const toggleDrawer = () => {
         setOpen(!open);
@@ -29,7 +36,7 @@ const Layout = ({ children, title, topButton }) => {
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <AppBar position="absolute" color={role === 'owner' ? 'secondary' : 'primary'} open={open}>
+            <AppBar position="absolute" color={owner ? 'secondary' : 'primary'} open={open}>
                 <Toolbar
                     sx={{
                         pr: '24px', // keep right padding when drawer closed
@@ -54,8 +61,17 @@ const Layout = ({ children, title, topButton }) => {
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        {role.toUpperCase()} Dashboard
+                        {authState.role.toUpperCase()} Dashboard
                     </Typography>
+                    {
+                        !owner ?
+                            <IconButton color="inherit" style={{ flexGrow: 1, placeContent: "flex-end" }}>
+                                <Badge badgeContent={cart.count} color="secondary">
+                                    <ShoppingBasketOutlined />
+                                </Badge>
+                            </IconButton>
+                            : ""
+                    }
                 </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -77,7 +93,7 @@ const Layout = ({ children, title, topButton }) => {
                 </Toolbar>
                 <Divider />
                 <List>
-                    {mainListItems.map((oneItem, index) => {
+                    {(owner ? ownerRoutes : userRoutes).map((oneItem, index) => {
                         return (
                             <Link key={index} to={oneItem.link} style={{ textDecoration: "none" }}>
                                 <ListItem button>
