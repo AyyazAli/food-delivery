@@ -3,13 +3,30 @@ import { AttachMoney, Check, Delete, Edit, Label, Receipt } from '@material-ui/i
 import Layout from 'layouts/layout';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteItemFromCart } from 'store/actions';
+import { deleteItemFromCart, resetCart } from 'store/actions';
+import axiosInstance from 'utils/axiosInstance';
 
 
 const CartPage = () => {
 
     const cartState = useSelector(state => state.cart)
     const dispatch = useDispatch();
+
+    const placeOrder = () => {
+        const mealIds = cartState.items.map(singleItem => singleItem._id)
+        // Only Place order if there are items in cart
+        if (cartState.count > 0) {
+            axiosInstance.post('/order', {
+                meals: mealIds,
+                totalPrice: cartState.totalPrice,
+                restaurant: cartState.restaurant,
+                count: cartState.count
+            }).then(response => {
+                dispatch(resetCart())
+            })
+        }
+    }
+
     return (
         <Layout title="Cart">
             <Card        >
@@ -65,7 +82,7 @@ const CartPage = () => {
 
                                 </CardContent>
                                 <CardActions>
-                                    <Button fullWidth variant="contained" color="primary">
+                                    <Button onClick={placeOrder} fullWidth variant="contained" color="primary">
                                         Place Order
                                     </Button>
                                 </CardActions>

@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes')
 const restaurantRoutes = require('./routes/restaurantRoutes')
 const mealRoutes = require('./routes/mealRoutes')
+const orderRoutes = require('./routes/orderRoutes')
 // Development Plugins Import i.e [Logging]
 const morgan = require('morgan');
 
@@ -64,6 +65,7 @@ app.use("/public", express.static(path.join(__dirname, 'public')));
 app.use("/api/user", userRoutes)
 app.use("/api/restaurant",restaurantRoutes )
 app.use("/api/meal",mealRoutes )
+app.use("/api/order",orderRoutes )
 
 
 // 3) Error Handeling

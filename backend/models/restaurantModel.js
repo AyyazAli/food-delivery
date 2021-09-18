@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = mongoose.Schema({
+const restaurantModel = mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
@@ -21,4 +21,4 @@ const userSchema = mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('restaurant', userSchema);
+module.exports = mongoose.model('restaurant', restaurantModel);
