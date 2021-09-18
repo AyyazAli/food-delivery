@@ -39,16 +39,16 @@ const SingleRestaurant = ({ match, history }) => {
             setLoading(false)
             if (!owner) {
                 setRestaurant(response.data.data)
+                if (cartState.restaurant && (cartState.restaurant?.id !== restaurantId)) {
+                    dispatch(resetCart())
+                    setRestaurantChangeDialog(true)
+                }
                 dispatch(cartRestaurant(
                     {
                         id: response.data.data._id,
                         name: response.data.data.name
                     }
                 ))
-                if (cartState.restaurant && (cartState.restaurant?.id !== restaurantId)) {
-                    setRestaurantChangeDialog(true)
-                    dispatch(resetCart())
-                }
             }
         })
     }, [])
@@ -59,7 +59,6 @@ const SingleRestaurant = ({ match, history }) => {
                 restaurant: restaurantId
             }
         }).then(response => {
-            console.log(response.data.data)
             setMeals(response.data.data)
         })
     }, [restaurant])

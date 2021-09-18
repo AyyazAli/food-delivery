@@ -59,6 +59,12 @@ const routes = [
         component: lazy(() => import('./views/restaurants/single-restaurant'))
     },
     {
+        path: '/cart',
+        isProtected: true,
+        exact: true,
+        component: lazy(() => import('./views/cart/cart'))
+    },
+    {
         path: '/not-authorized',
         exact: true,
         component: lazy(() => import('./views/auth/not-authorized'))

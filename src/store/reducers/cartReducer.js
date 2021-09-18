@@ -4,13 +4,14 @@ import * as actionTypes from 'store/constants';
 const initialState = {
     items: [],
     count: 0,
-    restaurant: null,
+    restaurant: undefined,
     totalPrice: 0
 }
 
 
 const addItem = (state, action) => {
     const newItems = state.items
+
     newItems.push(action.item)
     const newPrice = state.totalPrice + action.item.price
     return updateObject(state, {
@@ -21,14 +22,14 @@ const addItem = (state, action) => {
 }
 
 const deleteItem = (state, action) => {
-    console.log(action.id)
-    const item = state.items.find(oneItem => oneItem.id === action.id)
+    const item = state.items[action.id]//state.items.find(oneItem => oneItem._id === action.id)
     let { count, totalPrice } = state;
     if (item) {
         count -= 1;
         totalPrice -= item.price
     }
-    const newItems = state.items.filter(singleItem => singleItem.id !== action.id)
+    const newItems = state.items;
+    newItems.splice(action.id, 1)//state.items.filter(singleItem => singleItem._id !== action.id)
     return updateObject(state, {
         items: newItems,
         count,
@@ -37,8 +38,12 @@ const deleteItem = (state, action) => {
 }
 
 const resetCart = (state, action) => {
+
     return updateObject(state, {
-        ...initialState
+        items: [],
+        count: 0,
+        restaurant: undefined,
+        totalPrice: 0
     })
 }
 
