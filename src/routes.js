@@ -45,24 +45,41 @@ const routes = [
         restrictTo: 'owner',
         component: lazy(() => import('./views/restaurants/meals/create-meal/create-meal'))
     },
+    {
+        path: '/owner/orders',
+        isProtected: true,
+        exact: true,
+        restrictTo: 'owner',
+        component: lazy(() => import('./views/orders/orders'))
+    },
     // User Routes
     {
         path: '/restaurants',
         isProtected: true,
         exact: true,
+        restrictTo: 'user',
         component: lazy(() => import('./views/restaurants/restaurants'))
     },
     {
         path: '/restaurants/:id',
         isProtected: true,
         exact: true,
+        restrictTo: 'user',
         component: lazy(() => import('./views/restaurants/single-restaurant'))
     },
     {
         path: '/cart',
         isProtected: true,
         exact: true,
+        restrictTo: 'user',
         component: lazy(() => import('./views/cart/cart'))
+    },
+    {
+        path: '/orders',
+        isProtected: true,
+        exact: true,
+        restrictTo: 'user',
+        component: lazy(() => import('./views/orders/orders'))
     },
     {
         path: '/not-authorized',
@@ -70,7 +87,7 @@ const routes = [
         component: lazy(() => import('./views/auth/not-authorized'))
     },
     {
-        component: () => <Redirect to="/not-authorized" />
+        component: () => "Not FOund"
     }
 
 
