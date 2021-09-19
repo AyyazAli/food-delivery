@@ -13,7 +13,8 @@ const orderSchema = mongoose.Schema({
     },
     meals: [{
         type: mongoose.Schema.Types.ObjectId,
-        required: [true, 'Meal Name is requried']
+        required: [true, 'Meal Name is requried'],
+        ref: 'meal'
     }],
     status: {
         type: String,
@@ -33,7 +34,7 @@ const orderSchema = mongoose.Schema({
     },
     orderHistory: [{
         message: { type: String },
-        createdAt: { type: Date }
+        date: { type: Date }
     }]
 }, { timestamps: true });
 

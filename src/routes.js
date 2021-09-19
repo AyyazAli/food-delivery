@@ -52,6 +52,13 @@ const routes = [
         restrictTo: 'owner',
         component: lazy(() => import('./views/orders/orders'))
     },
+    {
+        path: '/owner/orders/:id',
+        isProtected: true,
+        exact: true,
+        restrictTo: 'owner',
+        component: lazy(() => import('./views/orders/single-order'))
+    },
     // User Routes
     {
         path: '/restaurants',
@@ -80,6 +87,13 @@ const routes = [
         exact: true,
         restrictTo: 'user',
         component: lazy(() => import('./views/orders/orders'))
+    },
+    {
+        path: '/orders/:id',
+        isProtected: true,
+        exact: true,
+        restrictTo: 'user',
+        component: lazy(() => import('./views/orders/single-order'))
     },
     {
         path: '/not-authorized',
