@@ -59,6 +59,13 @@ const routes = [
         restrictTo: 'owner',
         component: lazy(() => import('./views/orders/single-order'))
     },
+    {
+        path: '/owner/users',
+        isProtected: true,
+        exact: true,
+        restrictTo: 'owner',
+        component: lazy(() => import('./views/users/users'))
+    },
     // User Routes
     {
         path: '/restaurants',
