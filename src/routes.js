@@ -5,7 +5,7 @@ const routes = [
     {
         path: '/',
         exact: true,
-        component: () => "home component"
+        component: lazy(()=>import('./views/Presentation'))
     },
     {
         path: '/login',
