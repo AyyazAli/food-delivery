@@ -1,5 +1,6 @@
 import * as actionTypes from 'store/constants';
 import axios from 'axios';
+import axiosInstance from 'utils/axiosInstance';
 
 
 export const loginStart = () => {
@@ -70,7 +71,7 @@ export const autoAuthenticate = () => {
 
 export const signUp = (data, router) => dispatch => {
     dispatch(registerStart());
-    axios.post(`${process.env.REACT_APP_API_URL}/api/user/sign-up`, data).then(response => {
+    axiosInstance.post(`/user/sign-up`, data).then(response => {
         dispatch(registerSuccess(response.data));
         setLocalStorage(response.data)
         authTimeOut(response.data.expiresIn)
@@ -83,14 +84,14 @@ export const signUp = (data, router) => dispatch => {
 export const login = (email, password, history) => dispatch => {
     const authData = { email, password };
     dispatch(loginStart());
-    axios.post(`${process.env.REACT_APP_API_URL}/api/user/login`, authData).then(response => {
+    axiosInstance.post(`/user/login`, authData).then(response => {
         dispatch(loginSuccess(response.data));
         dispatch(authTimeOut(response.data.expiresIn));
         setLocalStorage(response.data)
         authTimeOut(response.data.expiresIn)
         if (response.data.data.user.role === 'owner') {
             history.push('/owner/restaurants')
-        } else if (response.data.data.user.role === 'user'){
+        } else if (response.data.data.user.role === 'user') {
             history.push('/restaurants')
         } else {
             history.push('/not-authorized')
