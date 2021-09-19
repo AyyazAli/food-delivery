@@ -45,7 +45,6 @@ exports.getRestaurants = catchAsync(async (req, res, next) => {
 exports.getSingleRestaurant = catchAsync(async (req, res, next) => {
     const restaurants = await new apiFeatures(RestaurantModel.findOne({ _id: req.params.id }))
         .query
-
     if (!restaurants) {
         return next(new AppError('No Restaurant Found'))
     }

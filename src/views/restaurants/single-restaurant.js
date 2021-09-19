@@ -22,9 +22,10 @@ const SingleRestaurant = ({ match, history }) => {
         dispatch(addItemToCart(item))
     }
     const handleCreateMeal = () => {
+        console.log(restaurant)
         history.push({
             pathname: '/owner/create-meal',
-            search: `?name=${restaurant.name}&restaurantId=${restaurantId}`
+            search: `?name=${restaurant?.name}&restaurantId=${restaurantId}`
         })
     }
 
@@ -37,8 +38,8 @@ const SingleRestaurant = ({ match, history }) => {
         setLoading(true)
         axiosInstance.get(`/restaurant/${restaurantId}`).then(response => {
             setLoading(false)
+            setRestaurant(response.data.data)
             if (!owner) {
-                setRestaurant(response.data.data)
                 if (cartState.restaurant && (cartState.restaurant?.id !== restaurantId)) {
                     dispatch(resetCart())
                     setRestaurantChangeDialog(true)
