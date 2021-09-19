@@ -40,12 +40,12 @@ exports.createUser = catchAsync(async (req, res, next) => {
   }
 });
 
-const signToken = (user,expiresIn) => {
-  return jwt.sign({ 
+const signToken = (user, expiresIn) => {
+  return jwt.sign({
     _id: user._id,
     email: user.email,
     role: user.role
-   }, process.env.JWT_SECRET, {
+  }, process.env.JWT_SECRET, {
     expiresIn
   })
 }
@@ -92,7 +92,9 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Email or Password is incorrect', 401));
   }
   // 3) if everything is ok, send token to client
-
+  if (user.accountStatus !== 'active') {
+    return next(new AppError('Your account has been blocked. Please contact the owner', 401))
+  }
   // Create the jwt token and send the response back to user
   createSendToken(user, 200, res);
 })

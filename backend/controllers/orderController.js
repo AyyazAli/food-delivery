@@ -128,10 +128,3 @@ exports.updateOrderStatus = catchAsync(async (req, res, next) => {
         order: updatedOrder
     })
 })
-
-exports.deleteMeal = catchAsync(async (req, res, next) => {
-    await MealsModel.deleteOne({ _id: req.params.id })
-    res.status(200).json({
-        message: 'Meal deleted Successfully'
-    })
-})
