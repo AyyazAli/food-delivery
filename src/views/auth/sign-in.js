@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     }
 })
 
-const SignIn = () => {
+const SignIn = ({ history }) => {
     const classes = useStyles();
     const authState = useSelector(state => state.auth)
     const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const SignIn = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        dispatch(login(data.get('email'), data.get('password')))
+        dispatch(login(data.get('email'), data.get('password'), history))
         console.log(authState)
     };
 

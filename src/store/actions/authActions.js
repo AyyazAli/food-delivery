@@ -16,15 +16,17 @@ export const loginFail = (error) => {
 
 
 export const logout = () => {
-    // localStorage.setItem('token', undefined)
-    // localStorage.setItem('user', undefined)
-    // localStorage.setItem('loggedIn', undefined)
+    localStorage.setItem('token', null)
+    localStorage.setItem('expiresIn', null)
+    localStorage.setItem('role', null)
+    localStorage.setItem('userId', null)
+    localStorage.setItem('loggedIn', false)
     return { type: actionTypes.LOGOUT }
 }
 
 export const authTimeOut = (expiresIn) => dispatch => {
     setTimeout(() => {
-        dispatch(logout)
+        // dispatch(logout)
     }, expiresIn)
 }
 
@@ -78,7 +80,7 @@ export const signUp = (data, router) => dispatch => {
     })
 }
 
-export const login = (email, password) => dispatch => {
+export const login = (email, password, history) => dispatch => {
     const authData = { email, password };
     dispatch(loginStart());
     axios.post(`${process.env.REACT_APP_API_URL}/api/user/login`, authData).then(response => {
@@ -86,6 +88,13 @@ export const login = (email, password) => dispatch => {
         dispatch(authTimeOut(response.data.expiresIn));
         setLocalStorage(response.data)
         authTimeOut(response.data.expiresIn)
+        if (response.data.data.user.role === 'owner') {
+            history.push('/owner/restaurants')
+        } else if (response.data.data.user.role === 'user'){
+            history.push('/restaurants')
+        } else {
+            history.push('/not-authorized')
+        }
     }).catch(err => {
         dispatch(loginFail(err.response.data));
     });

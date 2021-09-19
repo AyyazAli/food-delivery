@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = mongoose.Schema({
+const mealSchema = mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
@@ -22,4 +22,4 @@ const userSchema = mongoose.Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('meal', userSchema);
+module.exports = mongoose.model('meal', mealSchema);

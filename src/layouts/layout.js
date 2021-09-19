@@ -1,13 +1,14 @@
 import { AppBar as MuiAppBar, Badge, Box, Button, Card, Container, Divider, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Paper, Toolbar, Typography } from "@material-ui/core";
-import { AccessTime, ChevronLeft, Dashboard, EmojiFoodBeverage, Menu, Notifications, People, ShoppingBasket, ShoppingBasketOutlined, VerifiedUser } from "@material-ui/icons";
+import { AccessTime, ChevronLeft, Dashboard, EmojiFoodBeverage, ExitToApp, Menu, Notifications, People, ShoppingBasket, ShoppingBasketOutlined, VerifiedUser } from "@material-ui/icons";
 import { makeStyles, styled } from "@material-ui/styles";
 import Copyright from "components/copyright/copyright";
 import Drawer from "layouts/drawer";
 import AppBar from "layouts/header";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { Redirect } from "react-router";
+import { logout } from "store/actions";
 
 const useStyles = makeStyles({
     topButton: {
@@ -17,31 +18,39 @@ const useStyles = makeStyles({
 
 const ownerRoutes = [
     { name: "Restaurants", link: '/owner/restaurants', icon: <EmojiFoodBeverage /> },
-    { name: "Users", link: '/owner/users', icon: <People /> }
+    { name: "Orders", link: '/owner/orders', icon: <AccessTime /> },
+    { name: "Users", link: '/owner/users', icon: <People /> },
+
 ]
 const userRoutes = [
     { name: "Restaurants", link: '/restaurants', icon: <EmojiFoodBeverage /> },
-    { name: "Orders", link: '/orders', icon: <AccessTime /> }
+    { name: "Orders", link: '/orders', icon: <AccessTime /> },
 ]
 
 const Layout = ({ children, title, topButton }) => {
     const [open, setOpen] = useState(true);
     const [redirect, setRedirect] = useState(false)
+    const [isLoggedOut, setIsLoggedOut] = useState(false)
     const authState = useSelector(state => state.auth)
     const owner = authState.role === "owner";
     const cart = useSelector(state => state.cart)
     const classes = useStyles();
+    const dispatch = useDispatch();
     const toggleDrawer = () => {
         setOpen(!open);
     };
     const handleCart = () => {
         setRedirect(true)
-        // setRedirect(false)
+    }
+    const handleLogout = () => {
+        dispatch(logout)
+        setIsLoggedOut(true)
     }
 
     return (
         <Box sx={{ display: 'flex' }}>
             {redirect ? <Redirect to="/cart" /> : ""}
+            {isLoggedOut ? <Redirect to="/login" /> : ""}
             <AppBar position="absolute" color={owner ? 'secondary' : 'primary'} open={open}>
                 <Toolbar
                     sx={{
@@ -67,7 +76,7 @@ const Layout = ({ children, title, topButton }) => {
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        {authState.role.toUpperCase()} Dashboard
+                        {authState.role ? authState.role.toUpperCase() : ""} Dashboard
                     </Typography>
                     {
                         !owner ?
@@ -112,6 +121,12 @@ const Layout = ({ children, title, topButton }) => {
                         )
                     })}
                 </List>
+                <ListItem button onClick={handleLogout}>
+                    <ListItemIcon>
+                        <ExitToApp />
+                    </ListItemIcon>
+                    <ListItemText primary="Logout" />
+                </ListItem>
                 <Divider />
             </Drawer>
             <Box
