@@ -21,6 +21,14 @@ const SignIn = ({ history }) => {
     const authState = useSelector(state => state.auth)
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        if (localStorage.getItem('role') === 'owner') {
+            history.push('/owner/restaurants')
+        } else if (localStorage.getItem('role') === 'user') {
+            history.push('/restaurants')
+        }
+    }, [])
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);

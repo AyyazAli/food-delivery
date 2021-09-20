@@ -7,7 +7,7 @@ import { deleteItemFromCart, resetCart } from 'store/actions';
 import axiosInstance from 'utils/axiosInstance';
 
 
-const CartPage = () => {
+const CartPage = ({history}) => {
 
     const cartState = useSelector(state => state.cart)
     const dispatch = useDispatch();
@@ -23,6 +23,7 @@ const CartPage = () => {
                 count: cartState.count
             }).then(response => {
                 dispatch(resetCart())
+                history.push('/orders')
             })
         }
     }

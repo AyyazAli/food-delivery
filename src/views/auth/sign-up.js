@@ -9,9 +9,18 @@ import Copyright from "../../components/copyright/copyright";
 
 
 
-const SignUp = ({history}) => {
+const SignUp = ({ history }) => {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.auth)
+
+    useEffect(() => {
+        if (localStorage.getItem('role') === 'owner') {
+            history.push('/owner/restaurants')
+        } else if (localStorage.getItem('role') === 'user') {
+            history.push('/restaurants')
+        }
+    }, [])
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
