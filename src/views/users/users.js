@@ -14,14 +14,11 @@ const Users = () => {
     }, [])
 
     const changeUserStatus = (id, currentStatus) => {
-        console.log(currentStatus)
         axiosInstance.patch(`/user/${id}`, {
             accountStatus: currentStatus === 'active' ? 'blocked' : 'active'
         }).then(response => {
             const index = users.findIndex(oneUser => oneUser._id === id)
-            console.log(index)
             const allUsers = [...users];
-            console.log(allUsers)
             allUsers[index].accountStatus = response.data.user.accountStatus
             setUsers(allUsers)
         })

@@ -38,11 +38,6 @@ exports.getMeals = catchAsync(async (req, res, next) => {
         .pagination()
         .query
 
-    console.log(meals)
-    // if (meals.length === 0) {
-    //     return next(new AppError('No Meals Found', 404))
-    // }
-
     const totalMeals = await MealsModel.countDocuments({}).exec();
 
     res.status(200).json({

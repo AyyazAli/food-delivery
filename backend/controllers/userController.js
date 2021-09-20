@@ -23,7 +23,6 @@ exports.getUsers = catchAsync(async (req, res, next) => {
 exports.updateUser = catchAsync(async (req, res, next) => {
 
     const { accountStatus } = req.body;
-    console.log(req.body)
     const user = await UserModel.findByIdAndUpdate(req.params.id, { accountStatus }, { new: true, runValidators: true })
     res.status(200).json({
         message: 'User Status Updated Successfully',

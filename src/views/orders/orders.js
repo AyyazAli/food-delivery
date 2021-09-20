@@ -22,7 +22,6 @@ const Orders = () => {
 
     const statusChangeHandler = (id, status) => {
         axiosInstance.patch(`/order/${id}`, { status }).then(response => {
-            console.log(response.data)
             const index = orders.findIndex(oneOrder => oneOrder._id === response.data.order._id)
             const oldOrders = [...orders]
             oldOrders[index].status = response.data.order.status;
@@ -68,7 +67,7 @@ const Orders = () => {
                                     <TableCell>{
                                         (new Date(oneOrder?.createdAt).getMonth() + 1) + "-" + new Date(oneOrder?.createdAt).getDate() + "-" + new Date(oneOrder?.createdAt).getFullYear()
                                     }</TableCell>
-                                    <TableCell>{oneOrder?.restaurant.name}</TableCell>
+                                    <TableCell>{oneOrder.restaurant?.name}</TableCell>
                                     <TableCell>
                                         <StatusChanger status={oneOrder?.status} onChangeHandler={(status) => statusChangeHandler(oneOrder?._id, status)} />
                                     </TableCell>

@@ -48,7 +48,6 @@ const resetCart = (state, action) => {
 }
 
 const setRestaurant = (state, action) => {
-    console.log(action)
     return updateObject(state, {
         restaurant: action.restaurant
     })

@@ -25,7 +25,6 @@ const SignIn = ({ history }) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         dispatch(login(data.get('email'), data.get('password'), history))
-        console.log(authState)
     };
 
     return (

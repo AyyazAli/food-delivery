@@ -22,7 +22,6 @@ const SingleRestaurant = ({ match, history }) => {
         dispatch(addItemToCart(item))
     }
     const handleCreateMeal = () => {
-        console.log(restaurant)
         history.push({
             pathname: '/owner/create-meal',
             search: `?name=${restaurant?.name}&restaurantId=${restaurantId}`

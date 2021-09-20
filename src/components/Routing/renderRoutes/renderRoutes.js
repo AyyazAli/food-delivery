@@ -27,7 +27,6 @@ const RenderRoutes = ({ routes }) => {
 
                 {
                     routes.map(({ path, exact, component, isProtected = false, restrictTo }, index) => {
-                        console.log({ path, exact, component, isProtected, restrictTo })
                         return isProtected
                             ? <ProtectedRoute
                                 path={path}

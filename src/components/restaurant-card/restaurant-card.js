@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const RestaurantCard = ({ to, name, description, mealType, action }) => {
     return (
-        <Card>
+        <Card data-testid="restaurant-card">
             <Link style={{ textDecoration: 'none', color: "inherit" }} to={to}>
                 <CardActionArea>
                     <CardHeader title={
