@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import React from 'react'
 
 const OrderHistory = ({ order }) => {
@@ -14,7 +14,14 @@ const OrderHistory = ({ order }) => {
                 {order?.orderHistory.map((singleHistory, index) => (
                     <TableRow key={index}>
                         <TableCell>{singleHistory.message}</TableCell>
-                        <TableCell> {Date(singleHistory.date)}</TableCell>
+                        <TableCell>
+                            <Typography>
+                                Date: {singleHistory.date.split("T")[0]}
+                            </Typography>
+                            <Typography>
+                                Time: {singleHistory.date.split("T")[1].split(".")[0]}
+                            </Typography>
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
