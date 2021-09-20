@@ -32,7 +32,7 @@ const SingleOrder = ({ match }) => {
                             <Typography >Name: {`${order?.user.firstName} ${order?.user.lastName}`}</Typography>
                             <Typography >Email: {order?.user.email}</Typography>
                             <Typography >Restaurant: {order?.restaurant.name}</Typography>
-                            <Typography > {order?.status} </Typography>
+                            <Typography > Status: {order?.status.toUpperCase()} </Typography>
                             <Typography >Total Items: {order?.count}</Typography>
                             <Typography >Total Price: $ {order?.total}</Typography>
                             <Typography >Date:{(new Date(order?.createdAt).getMonth() + 1) + "-" + new Date(order?.createdAt).getDate() + "-" + new Date(order?.createdAt).getFullYear()}</Typography>
