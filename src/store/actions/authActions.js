@@ -69,13 +69,19 @@ export const autoAuthenticate = () => {
     return { type: actionTypes.AUTO_AUTHENTICATE, data };
 }
 
-export const signUp = (data, router) => dispatch => {
+export const signUp = (data, history) => dispatch => {
     dispatch(registerStart());
     axiosInstance.post(`/user/sign-up`, data).then(response => {
         dispatch(registerSuccess(response.data));
         setLocalStorage(response.data)
         authTimeOut(response.data.expiresIn)
-        // router.history.push('/');
+        if (response.data.data.user.role === 'owner') {
+            history.push('/owner/restaurants')
+        } else if (response.data.data.user.role === 'user') {
+            history.push('/restaurants')
+        } else {
+            history.push('/not-authorized')
+        }
     }).catch(err => {
         dispatch(registerFail(err.response.data));
     })

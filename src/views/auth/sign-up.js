@@ -9,7 +9,7 @@ import Copyright from "../../components/copyright/copyright";
 
 
 
-const SignUp = () => {
+const SignUp = ({history}) => {
     const dispatch = useDispatch();
     const authState = useSelector(state => state.auth)
     const handleSubmit = (event) => {
@@ -22,7 +22,7 @@ const SignUp = () => {
             email: data.get('email'),
             password: data.get('password'),
             passwordConfirm: data.get('passwordConfirm'),
-        }))
+        }, history))
     };
 
     return (
